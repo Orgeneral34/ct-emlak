@@ -1,0 +1,9 @@
+{
+  "appId": "com.ceylantek.ctemlak",
+  "appName": "CT Emlak",
+  "webDir": "dist",
+  "server": {
+    "url": "https://ctemlak.ceylantek.com",
+    "cleartext": true
+  }
+}

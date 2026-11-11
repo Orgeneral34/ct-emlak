@@ -1,0 +1,42 @@
+workflows:
+  ios-appstore-workflow:
+    name: CT Emlak iOS App Store Build
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: Codemagic_AppStore_Key
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.ceylantek.ctemlak
+      vars:
+        XCODE_WORKSPACE: "ios/App/App.xcodeproj"
+        XCODE_SCHEME: "App"
+      node: 22
+      xcode: latest
+    scripts:
+      - name: Install npm dependencies and build web assets
+        script: |
+          npm install
+          npm run build
+          npx cap sync ios
+      - name: Set up code signing settings on Xcode project
+        script: |
+          xcode-project use-profiles --project="ios/App/App.xcodeproj"
+      - name: Increment build number
+        script: |
+          cd ios/App
+          agvtool new-version -all 1
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/ios/App/App.xcodeproj" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        submit_to_app_store: false

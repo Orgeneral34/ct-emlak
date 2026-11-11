@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <!-- PWA Settings -->
+    <meta name="theme-color" content="#070b14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CT Emlak" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    
+    <!-- Title & SEO -->
+    <title>CT Emlak - Kurumsal Portföy, Performans & Emlak CRM by ceylantek.com</title>
+    <meta name="description" content="CT Emlak - Emlak Ofisleri, Brokerlar ve Gayrimenkul Danışmanları için Kurumsal Portföy, E-Sözleşme, Satış Performansı ve Akıllı CRM Platformu by ceylantek.com" />
+    
+    <!-- Fonts & Leaflet Map Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    
+    <style>
+      :root {
+        --app-safe-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+      /* PWA & Mobile App Safe Area for Status Bar and Navigation Bar */
+      .safe-bottom {
+        padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+      }
+      .safe-top {
+        padding-top: max(env(safe-area-inset-top, 0px), var(--app-safe-top, 0px));
+      }
+    </style>
+    <script>
+      (function() {
+        function applySafeArea() {
+          try {
+            var ua = navigator.userAgent || '';
+            var isCapacitor = !!window.Capacitor || window.location.protocol === 'capacitor:';
+            var isStandalone = window.matchMedia('(display-mode: standalone)').matches || !!window.navigator.standalone;
+            var isAndroid = /Android/i.test(ua);
+            var isWebView = isAndroid && (/wv/i.test(ua) || /Version\/[\d.]+/i.test(ua) || isCapacitor);
+
+            // Test if env(safe-area-inset-top) returns a valid number
+            var testDiv = document.createElement('div');
+            testDiv.style.cssText = 'position:fixed;top:0;left:0;height:0;padding-top:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none;';
+            document.documentElement.appendChild(testDiv);
+            var measuredInset = parseInt(window.getComputedStyle(testDiv).paddingTop, 10) || 0;
+            if (testDiv.parentNode) {
+              testDiv.parentNode.removeChild(testDiv);
+            }
+
+            if (measuredInset > 0) {
+              document.documentElement.style.setProperty('--app-safe-top', measuredInset + 'px');
+            } else if (isCapacitor || isWebView || isStandalone) {
+              // Standard Android status bar height on modern devices (approx 36px)
+              document.documentElement.style.setProperty('--app-safe-top', '36px');
+            } else {
+              document.documentElement.style.setProperty('--app-safe-top', '0px');
+            }
+          } catch (e) {
+            console.error('Safe area error:', e);
+          }
+        }
+        applySafeArea();
+        window.addEventListener('DOMContentLoaded', applySafeArea);
+        window.addEventListener('resize', applySafeArea);
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 text-slate-900 antialiased overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Register Service Worker for PWA & Offline Support
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then((reg) => {
+            reg.update();
+            console.log('Altın Emlak Service Worker aktif:', reg.scope);
+          }).catch((err) => {
+            console.log('SW hatası:', err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

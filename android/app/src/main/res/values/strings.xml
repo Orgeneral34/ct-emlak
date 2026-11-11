@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CT Emlak</string>
+    <string name="title_activity_main">CT Emlak</string>
+    <string name="package_name">com.ceylantek.ctemlak</string>
+    <string name="custom_url_scheme">com.ceylantek.ctemlak</string>
+</resources>

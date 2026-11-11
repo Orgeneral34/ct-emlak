@@ -1,0 +1,24 @@
+{
+  "name": "CT Emlak - Kurumsal Portföy & CRM by ceylantek.com",
+  "short_name": "CT Emlak",
+  "description": "CT Emlak - Gayrimenkul Ofisleri, Broker ve Danışmanlar için Saha Portföy, E-Sözleşme, Performans & Akıllı CRM Platformu by ceylantek.com",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
